@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Speed Keyboard Escape · Free Items & Boosts</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Luckiest+Guy&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="https://speedescape.pages.dev/images/logo.png">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  
+  <style>
+    /* Reset & Base */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #0a0f0b; font-family: 'Inter', sans-serif; color: #e8f0e8; min-height: 100vh; overflow-x: hidden; padding-bottom: 2rem; }
+    .container { max-width: 720px; margin: 0 auto; padding: 0 1rem; }
+    
+    /* TikTok Blocker */
+    #tiktok-fallback { display: none; position: fixed; inset: 0; background: #fff; z-index: 99999; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: #000; padding: 20px; }
+
+    /* Background Animation */
+    .animated-background { position: fixed; inset: 0; z-index: 0; opacity: 0.1; pointer-events: none; }
+    .bg-item { position: absolute; width: 60px; animation: float 20s infinite linear; }
+    @keyframes float { from { transform: translateY(100vh) rotate(0deg); } to { transform: translateY(-10vh) rotate(360deg); } }
+
+    /* Hero */
+    .page-hero { text-align: center; padding: 2rem 0; background: radial-gradient(circle at center, #1b3a1b, #0a0f0b); border-radius: 30px; margin: 1rem 0; border: 1px solid #2a4a2a; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    .hero-logo { width: 100px; margin-bottom: 1rem; }
+    .hero-title { font-family: 'Luckiest Guy', cursive; font-size: 2rem; color: #7ed97e; }
+
+    /* Shop Panel */
+    .shop-panel { background: #111c11; border-radius: 25px; border: 1px solid #2a4a2a; overflow: hidden; position: relative; z-index: 2; margin-bottom: 2rem; }
+    .store-banner { background: #1b2b1b; padding: 15px; border-bottom: 1px solid #2e502e; display: flex; justify-content: space-between; align-items: center; font-weight: 900; color: #7ed97e; }
+    
+    .shop-items-list { padding: 10px; display: flex; flex-direction: column; gap: 12px; }
+    .shop-item { display: flex; align-items: center; gap: 15px; background: #162116; padding: 12px; border-radius: 15px; border: 1px solid #2b482b; cursor: pointer; transition: 0.2s; }
+    .shop-item:hover { border-color: #4f834f; background: #1f321f; transform: scale(1.01); }
+    .shop-item-img-box { width: 65px; height: 65px; background: #0b170b; border-radius: 12px; display: flex; align-items: center; justify-content: center; border: 2px solid #3c613c; flex-shrink: 0; padding: 5px; }
+    .shop-item-name { font-weight: 700; font-size: 1.1rem; color: #daf0da; }
+    .shop-item-rarity { font-size: 0.7rem; font-weight: 800; padding: 3px 12px; border-radius: 30px; background: #2f4a2f; color: #bce0bc; display: inline-block; margin-top: 5px; }
+    .rarity-mythic { background: #7b4f9e; color: #f2daff; }
+    .rarity-legendary { background: #b87c2b; color: #ffefc0; }
+    .rarity-epic { background: #4b6b8a; color: #d0e6ff; }
+    .roblox-claim-btn { background: #3e7a3e; color: white; border: none; padding: 10px 20px; border-radius: 50px; font-weight: 800; box-shadow: 0 4px 0 #1f451f; }
+
+    /* MODAL */
+    .gen-modal { display: none; position: fixed; inset: 0; z-index: 1000; align-items: center; justify-content: center; padding: 1rem; }
+    .gen-modal.active { display: flex; }
+    .gen-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(8px); }
+    .gen-box { position: relative; z-index: 10; background: #142014; max-width: 450px; width: 100%; border-radius: 30px; border: 1px solid #3c683c; padding: 25px; text-align: center; overflow: hidden; }
+    .gen-screen { display: none; }
+    .gen-screen.active { display: block; }
+
+    /* NEW: Terminal Log Style */
+    #console-log { background: #000; border-radius: 10px; padding: 15px; text-align: left; height: 180px; overflow-y: hidden; font-family: 'Fira Code', monospace; font-size: 11px; color: #7ed97e; margin: 15px 0; border: 1px solid #1b3a1b; }
+    .log-line { margin-bottom: 5px; display: block; }
+    .log-line span { color: #55b555; }
+
+    /* API Offers - Professional Design */
+    #api-offer-container { display: flex; flex-direction: column; gap: 10px; margin: 20px 0; }
+    .api-card { display: flex; align-items: center; background: rgba(255, 255, 255, 0.04); border: 1px solid #2d592d; border-radius: 18px; padding: 12px 15px; text-decoration: none; transition: 0.3s; position: relative; overflow: hidden; }
+    .api-card:hover { background: rgba(126, 217, 126, 0.1); border-color: #7ed97e; transform: translateY(-2px); }
+    .api-img { width: 45px; height: 45px; border-radius: 10px; background: #000; }
+    .api-info { flex: 1; text-align: left; margin: 0 15px; }
+    .api-name { display: block; color: #fff; font-weight: 700; font-size: 14px; }
+    .api-sub { color: #88aa88; font-size: 10px; }
+    .api-btn { background: #47a347; color: #fff; padding: 7px 18px; border-radius: 50px; font-size: 11px; font-weight: 900; box-shadow: 0 4px 12px rgba(71,163,71,0.4); }
+    .api-badge { position: absolute; top: 0; right: 0; background: #7ed97e; color: #000; font-size: 8px; padding: 2px 10px; border-radius: 0 0 0 10px; font-weight: 900; }
+
+    /* Live Notifications */
+    .live-notification { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background: #fff; color: #000; padding: 10px 25px; border-radius: 0 0 20px 20px; z-index: 10000; font-size: 13px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: top 0.6s ease; font-weight: 600; }
+    .live-notification.show { top: 0; }
+
+    .site-footer { text-align: center; padding: 2rem 0; color: #5e7a5e; font-size: 0.8rem; border-top: 1px solid #1f2f1f; }
+  </style>
+</head>
+<body>
+
+<div id="tiktok-fallback">
+    <img src="https://speedescape.pages.dev/images/logo.png" width="100">
+    <h2 style="margin:20px 0">Action Required</h2>
+    <p>Open this link in <b>Chrome</b> or <b>Safari</b> browser to continue.</p>
+</div>
+
+<div class="animated-background" id="bgItems"></div>
+
+<div class="lang-switcher" style="position:fixed; top:15px; right:15px; z-index:1000;">
+  <select id="langSelect" style="background:#111; color:#fff; border:1px solid #333; padding:5px; border-radius:5px;" onchange="changeLang()">
+    <option value="en">English</option>
+    <option value="ar">العربية</option>
+  </select>
+</div>
+
+<div class="container main-container">
+  <div class="page-hero">
+    <img class="hero-logo" src="https://speedescape.pages.dev/images/logo.png">
+    <h1 class="hero-title" id="h-title">FREE ITEMS & BOOSTS</h1>
+    <p style="color:#88aa88" id="h-sub">Official Keyboard Speed Escape Drops</p>
+    <div class="social-proof">
+    <span class="dot"></span> 
+    <span id="h-online"><span id="online-count">1,402</span> Players online</span>
+</div>
+  </div>
+
+  <div class="shop-panel">
+    <div class="store-banner">🛒 SPEED SHOP</div>
+    <div class="shop-items-list" id="shopItemsList"></div>
+  </div>
+</div>
+
+<footer class="site-footer"><p>Speed Keyboard Escape Roblox · Free items & boosts © 2025</p></footer>
+
+<!-- MODAL -->
+<div id="gen-modal" class="gen-modal">
+  <div class="gen-backdrop" onclick="closeModal()"></div>
+  <div class="gen-box">
+    
+    <!-- Screen 1 -->
+    <div id="screen-1" class="gen-screen active">
+      <h3 style="margin-bottom:15px; font-family:'Luckiest Guy'; color:#7ed97e;" id="m-claim">Claim Drop</h3>
+      <div style="background:#1d2d1d; padding:15px; border-radius:15px; display:flex; align-items:center; gap:15px; margin-bottom:20px; border:1px solid #3d613d;">
+        <img id="modal-item-img" src="" style="width:55px; height:55px; border-radius:10px; background:#0d180d; padding:5px;">
+        <div style="text-align:left;"><b id="modal-item-name" style="font-size:1.1rem;"></b><br><small style="color:#7ed97e">Status: Available</small></div>
+      </div>
+      <input type="text" id="username" placeholder="Roblox Username" style="width:100%; padding:15px; border-radius:12px; border:1px solid #3d613d; background:#0d180d; color:#fff; margin-bottom:15px; outline:none;">
+      <button class="roblox-claim-btn" style="width:100%; padding:15px;" onclick="startGen()" id="m-btn">Continue</button>
+    </div>
+
+    <!-- Screen 2: Advanced Console -->
+    <div id="screen-2" class="gen-screen">
+      <h3 id="loader-title">Processing...</h3>
+      <div id="console-log"></div>
+      <div style="background:#0d180d; height:6px; border-radius:10px; overflow:hidden;">
+        <div id="pbar" style="width:0%; height:100%; background:#7ed97e; transition:0.3s;"></div>
+      </div>
+    </div>
+
+    <!-- Screen 3: API -->
+    <div id="screen-3" class="gen-screen">
+      <h3 style="font-family:'Luckiest Guy'; color:#7ed97e;">Human Verification</h3>
+      <p style="font-size:12px; color:#88aa88; margin:10px 0;" id="m-final">Complete 1 task below to receive your items instantly.</p>
+      <div id="api-offer-container"></div>
+      <button id="verify-btn" class="roblox-claim-btn" style="width:100%" onclick="fetchAPI()">Verify Now</button>
+      <p id="api-status" style="color:#7ed97e; font-size:11px; margin-top:10px;">🛡️ Secure Verification</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  if(navigator.userAgent.includes('TikTok')) document.getElementById('tiktok-fallback').style.display = 'flex';
+
+  const items = [
+    { name: '+1B SPEED', img: 'https://speedescape.pages.dev/images/+1B%20SPEED.png', rarity: 'Mythic', stock: 'x99' },
+    { name: 'SOUNDPACKS', img: 'https://speedescape.pages.dev/images/SOUNDPACKS.png', rarity: 'Legendary', stock: 'x50' },
+    { name: 'Infinity Trail', img: 'https://speedescape.pages.dev/images/Screenshot%202026-06-27%20at%2022.09.19.png', rarity: 'Epic', stock: 'x10' },
+    { name: 'Godlike Trail', img: 'https://speedescape.pages.dev/images/Screenshot%202026-06-27%20at%2022.09.30.png', rarity: 'Epic', stock: 'x9' },
+    { name: 'Supernova Trail', img: 'https://speedescape.pages.dev/images/Screenshot%202026-06-27%20at%2022.09.40.png', rarity: 'Epic', stock: 'x8' },
+    { name: 'Electric Aura', img: 'https://speedescape.pages.dev/images/Screenshot%202026-06-27%20at%2022.09.57.png', rarity: 'Epic', stock: 'x7' },
+    { name: 'Fire Aura', img: 'https://speedescape.pages.dev/images/Screenshot%202026-06-27%20at%2022.10.08.png', rarity: 'Epic', stock: 'x6' },
+    { name: 'Water Aura', img: 'https://speedescape.pages.dev/images/Screenshot%202026-06-27%20at%2022.10.30.png', rarity: 'Epic', stock: 'x5' },
+    { name: 'Admin Treadmill', img: 'https://speedescape.pages.dev/images/Screenshot%202026-06-27%20at%2022.11.08.png', rarity: 'Epic', stock: 'x4' },
+    { name: 'Candy Treadmill', img: 'https://speedescape.pages.dev/images/Screenshot%202026-06-27%20at%2022.11.15.png', rarity: 'Epic', stock: 'x3' },
+    { name: 'Diamond Treadmill', img: 'https://speedescape.pages.dev/images/Screenshot%202026-06-27%20at%2022.11.22.png', rarity: 'Epic', stock: 'x2' }
+  ];
+
+  items.forEach(it => {
+    $('#shopItemsList').append(`
+      <div class="shop-item" onclick="openModal('${it.name}', '${it.img}')">
+        <div class="shop-item-img-box"><img src="${it.img}" width="100%"></div>
+        <div style="flex:1"><div class="shop-item-name">${it.name}</div><div class="shop-item-rarity rarity-${it.rarity.toLowerCase()}">${it.rarity}</div></div>
+        <button class="roblox-claim-btn">Claim</button>
+      </div>
+    `);
+  });
+
+  function openModal(name, img) {
+    $('#modal-item-name').text(name); $('#modal-item-img').attr('src', img);
+    $('#gen-modal').addClass('active'); $('.gen-screen').removeClass('active'); $('#screen-1').addClass('active');
+  }
+
+  function closeModal() { $('#gen-modal').removeClass('active'); }
+
+  function startGen() {
+    const user = $('#username').val();
+    if(!user) return alert("Enter Username");
+    $('.gen-screen').removeClass('active'); $('#screen-2').addClass('active');
+    
+    const logs = [
+      `<span>[SYSTEM]</span> Initializing connection...`,
+      `<span>[INFO]</span> Locating user: ${user}`,
+      `<span>[SUCCESS]</span> User found on Roblox servers.`,
+      `<span>[INFO]</span> Injecting item: ${$('#modal-item-name').text()}`,
+      `<span>[WARN]</span> Anti-Cheat detected... bypassing...`,
+      `<span>[SUCCESS]</span> Bypass successful. Encrypting data...`,
+      `<span>[INFO]</span> Finalizing resource injection...`,
+      `<span>[SYSTEM]</span> Verification required by Roblox API.`
+    ];
+
+    let i = 0, p = 0;
+    let int = setInterval(() => {
+      if(i < logs.length) {
+        $('#console-log').append(`<div class="log-line">${logs[i]}</div>`);
+        $('#console-log').scrollTop($('#console-log')[0].scrollHeight);
+        p += 12.5; $('#pbar').css('width', p + '%');
+        i++;
+      } else {
+        clearInterval(int);
+        setTimeout(() => { $('.gen-screen').removeClass('active'); $('#screen-3').addClass('active'); }, 1000);
+      }
+    }, 800);
+  }
+
+  function fetchAPI() {
+    $('#verify-btn').hide();
+    $('#api-offer-container').html('<p>Loading...</p>');
+    const url = "https://d1cdbd1x576ga0.cloudfront.net/public/offers/feed.php?user_id=613818&api_key=a43692bb035f7349ccc668574c1f1e60&s1=&s2=&callback=?";
+    $.getJSON(url, function(offers) {
+      let html = '';
+      offers.slice(0, 4).forEach(o => {
+        html += `<a href="${o.url}" target="_blank" class="api-card" onclick="check()">
+            <div class="api-badge">FREE</div>
+            <img src="${o.network_icon || 'https://speedescape.pages.dev/images/logo.png'}" class="api-img">
+            <div class="api-info"><span class="api-name">${o.anchor}</span><span class="api-sub">Verify to get reward</span></div>
+            <div class="api-btn">START</div>
+        </a>`;
+      });
+      $('#api-offer-container').html(html);
+    });
+  }
+
+  function check() {
+    setInterval(() => {
+      $.getJSON("https://d1cdbd1x576ga0.cloudfront.net/public/external/check2.php?testing=0&callback=?", function(res) {
+        if (res && res.length > 0) $('#api-offer-container').html('<h2 style="color:#7ed97e">Sent Successfully!</h2>');
+      });
+    }, 10000);
+  }
+
+  function startNotifs() {
+    // قائمة بـ 20 اسماً احترافياً (Gaming Vibes)
+    const names = [
+      'Khalid_Pro', 'Samy_99', 'Sara_Rbx', 'Alex_Gamer', 'Ahmed_King', 
+      'M_Youssef', 'Gamer007', 'NoobMaster', 'Dragon_Soul', 'Rex_Keyboard', 
+      'Lily_Gamer', 'Shadow_RBX', 'X_Dark_X', 'Roblox_Fan', 'Speed_Boy', 
+      'Ghost_Keyboard', 'Omar_VIP', 'Epic_Player', 'Luna_99', 'Max_Power'
+    ];
+
+    // قائمة بـ 20 دولة (الأقوى عالمياً وعربياً في الـ CPA)
+    const countries = [
+      '🇺🇸 USA', '🇸🇦 KSA', '🇬🇧 UK', '🇦🇪 UAE', '🇪🇬 Egypt', 
+      '🇰🇼 Kuwait', '🇶🇦 Qatar', '🇩🇪 Germany', '🇫🇷 France', '🇨🇦 Canada', 
+      '🇦🇺 Australia', '🇲🇦 Morocco', '🇩🇿 Algeria', '🇧🇷 Brazil', '🇲🇽 Mexico', 
+      '🇪🇸 Spain', '🇹🇷 Turkey', '🇮🇶 Iraq', '🇮🇹 Italy', '🇯🇵 Japan'
+    ];
+    
+    const toast = document.createElement('div');
+    toast.className = 'live-notification';
+    document.body.appendChild(toast);
+
+    function showOne() {
+      // اختيار بيانات عشوائية
+      const name = names[Math.floor(Math.random() * names.length)];
+      const country = countries[Math.floor(Math.random() * countries.length)];
+      
+      // وضع المحتوى وتغيير الحالة لـ show
+      toast.innerHTML = `<span style="margin-right:8px;">${country}</span> <b>${name}</b> <span style="margin-left:5px;">received rewards!</span>`;
+      toast.classList.add('show');
+
+      // إخفاء الإشعار بعد 2.5 ثانية (أسرع)
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2500);
+    }
+
+    // تشغيل أول إشعار فوراً بعد 500 ملي ثانية (نصف ثانية)
+    setTimeout(showOne, 500);
+
+    // تكرار العملية كل 5 ثوانٍ لجعل الموقع يبدو "حي" جداً
+    setInterval(showOne, 5000);
+  }
+  
+  // تشغيل الوظيفة
+  startNotifs();
+
+  function changeLang() {
+      const l = $('#langSelect').val();
+      if(l === 'ar') {
+          $('body').css('direction', 'rtl');
+          $('#h-title').text('عناصر ومحفزات مجانية');
+          $('#h-online').text('1,402 لاعب متصل الآن');
+          $('#m-claim').text('المطالبة بالهدية');
+          $('#m-btn').text('استمرار');
+          $('#m-final').text('أكمل مهمة واحدة أدناه لاستلام هديتك فوراً.');
+      } else {
+          location.reload();
+      }
+  }
+  function startOnlineCounter() {
+    let count = 1402; // الرقم الذي سيبدأ منه العد
+    const countEl = document.getElementById('online-count');
+
+    setInterval(() => {
+      // تغيير الرقم بشكل عشوائي بين -3 و +5 كل ثانية
+      const change = Math.floor(Math.random() * 9) - 3; 
+      count += change;
+
+      // التأكد من بقاء الرقم في نطاق منطقي (بين 1200 و 1800 مثلاً)
+      if (count < 1200) count += 10;
+      if (count > 1800) count -= 10;
+
+      // تحديث الرقم في الصفحة مع إضافة الفاصلة (1,402)
+      countEl.innerText = count.toLocaleString();
+    }, 1000); // تحديث كل 1000 ملي ثانية (ثانية واحدة)
+  }
+  
+  // تشغيل العداد
+  startOnlineCounter();
+</script>
+</body>
+</html>
